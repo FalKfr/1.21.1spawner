@@ -1,0 +1,32 @@
+name: Build Spawner Protect 1.21.11
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.5.1
+      - name: Find project folder
+        run: |
+          DIR=$(find . -name build.gradle -not -path './.git/*' | awk '{print length($0) " " $0}' | sort -n | head -1 | cut -d' ' -f2- | xargs dirname)
+          echo "Building in $DIR"
+          echo "BUILD_DIR=$DIR" >> $GITHUB_ENV
+      - name: Build
+        run: gradle build
+        working-directory: ${{ env.BUILD_DIR }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spawnerprotect-1.21.11-jar
+          path: |
+            ${{ env.BUILD_DIR }}/build/libs/spawnerprotect-*.jar
+            !${{ env.BUILD_DIR }}/build/libs/*-sources.jar
