@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "spotifi_hud",
+  "version": "1.0.0",
+  "name": "Spotifi HUD",
+  "description": "HUD menu with customizable keybind and player ESP (tracers / box).",
+  "environment": "client",
+  "entrypoints": { "client": ["com.spotifi.hud.SpotifiHudClient"] },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.11",
+    "fabric-api": "*"
+  }
+}
